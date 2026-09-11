@@ -46,9 +46,58 @@ The code of ReactOS is licensed under [GNU GPL 2.0](https://github.com/reactos/r
 ## Building
 
 ![Build](https://github.com/reactos/reactos/workflows/Build/badge.svg) [![rosbewin.badge]][rosbewin.link] [![rosbeunix.badge]][rosbeunix.link] [![coverity.badge]][coverity.link]
+A arquitetura i386 deve ser especificada durante a configuração do CMake:
+-DARCH=i386
 
-To build the system it is strongly advised to use the _ReactOS Build Environment (RosBE)._
-Up-to-date versions for Windows and for Unix/GNU-Linux are available from our download page at: ["Build Environment"](https://reactos.org/wiki/Build_Environment).
+Estrutura do código-fonte para desenvolvimento
+Para testar as modificações, deve ser utilizada uma cópia do código-fonte editada.
+A estrutura recomendada é:
+
+src/
+├── boot/
+├── hal/
+├── ntoskrnl/
+├── sdk/
+├── ...
+└── build/
+
+A pasta src/build deve ficar na raiz do código-fonte editado para armazenar os artefatos de compilação.
+Compilação no Linux (Arch Linux Focus)
+O projeto pode ser compilado utilizando CMake + Ninja e o toolchain MinGW-w64.
+Dependências no Arch Linux
+No Arch Linux, os pacotes necessários podem ser instalados com:
+
+/*******************/
+
+$ sudo pacman -S --needed \
+  base-devel \
+  cmake \
+  ninja \
+  mingw-w64-gcc \
+
+/*******************/
+
+Links Simbólicos para Ferramentas
+Para garantir que o CMake encontre as ferramentas necessárias (windmc, windres, etc.), crie links simbólicos se eles não estiverem no PATH padrão:
+
+$ sudo ln -sf /usr/bin/i686-w64-mingw32-windmc /usr/local/bin/windmc
+$ sudo ln -sf /usr/bin/i686-w64-mingw32-windres /usr/local/bin/windres
+
+/*******************/
+
+Configuração do CMake
+Dentro da pasta build:
+
+$ cmake .. -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake \
+  -DARCH=i386
+
+ -- !! Compilando a ISO !! --
+Depois que o CMake terminar:
+
+$ ninja bootcd
+
+/*******************/
 
 Alternatively one can use Microsoft Visual C++ (MSVC) version 2019+. Building with MSVC is covered here: ["Visual Studio or Microsoft Visual C++"](https://reactos.org/wiki/CMake#Visual_Studio_or_Microsoft_Visual_C.2B.2B).
 
