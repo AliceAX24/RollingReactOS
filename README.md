@@ -29,8 +29,6 @@ O código do ReactOS está licenciado sobre o tipo de licença: [GNU GPL 2.0](ht
 
 **ReactOS é atualmente um sistema operacional de qualidade Alpha.** Isso significa que o ReactOS está em desenvolvimento pesado e você tem que estar pronto para encontrar alguns problemas. Coisas diferentes podem não funcionar bem e podem corromper os dados presentes no seu disco rígido. É altamente recomendável testar o ReactOS em uma máquina virtual ou em um computador sem dados confidenciais ou críticos!
 
-/*******************/
-
 ## Compilar/montar
 
 **A arquitetura i386 deve ser especificada durante a configuração do CMake:**
@@ -60,15 +58,11 @@ $ sudo pacman -S --needed \
   ninja \
   mingw-w64-gcc \
 
-/*******************/
-
 ### Links Simbólicos para Ferramentas
 Para garantir que o CMake encontre as ferramentas necessárias (windmc, windres, etc.), crie links simbólicos se eles não estiverem no PATH padrão:
 
 $ sudo ln -sf /usr/bin/i686-w64-mingw32-windmc /usr/local/bin/windmc
 $ sudo ln -sf /usr/bin/i686-w64-mingw32-windres /usr/local/bin/windres
-
-/*******************/
 
 ## Configuração do CMake
 Dentro da pasta build:
@@ -84,20 +78,14 @@ Depois que o CMake terminar:
 
 See ["Building ReactOS"](https://reactos.org/wiki/Building_ReactOS) article for more details.
 
-/*******************/
-
 ## Imagem bootável
 Para construir uma imagem de CD inicializável execute **$ ninja bootcd** a partir do diretório de compilação. Isso criará uma imagem de CD com um nome de arquivo `bootcd.iso`.
 
 ### Você sempre pode baixar novas compilações binárias de imagens inicializáveis a partir da página ["Daily builds"](https://reactos.org/getbuilds/).
 
-/*******************/
-
 ## Alocação de arquivos
 Por padrão, apenas FAT16 ou FAT32.
 A Configuração do ReactOS pode formatar as partições, se necessário.
-
-/*******************/
 
 ## Contribuindo para eles [![ prwelcome.badge]](https://reactos.org/wiki/Commiting_Changes) (em inglês)
 Eles estão sempre à procura de desenvolvedores! Verifique [como contribuir](CONTRIBUTING.md) se você estiver disposto a participar.
@@ -108,8 +96,6 @@ Se você tiver visto o código-fonte proprietário do Microsoft Windows (incluin
 ## Quem é responsável
 Os desenvolvedores ativos são listados como membros da [organização do GitHub](https://github.com/orgs/reactos/people).
 Veja também o arquivo [CRÉDITOS](CRÉDITOS) para outras pessoas.
-
-/*******************/
 
 ## Documentação mais atual minha
 https://rollingcake.mintlify.site/
