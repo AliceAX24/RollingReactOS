@@ -8,30 +8,30 @@
 
 <p align=center>
   <a href="https://reactos.org/project-news/reactos-0416-released/">
-    <img alt="ReactOS 0.4.16 Release" src="https://img.shields.io/badge/release-0.4.16-0688CB.svg"></a>
+    <img alt="ReactOS 0.4.16" src="https://img.shields.io/badge/release-0.4.16-0688CB.svg"></a>
   <a href="https://reactos.org/download/">
     <img alt="Download ReactOS" src="https://img.shields.io/badge/download-latest-0688CB.svg"></a>
   <a href="https://sourceforge.net/projects/reactos/">
-    <img alt="SourceForge Download" src="https://img.shields.io/sourceforge/dm/reactos.svg?colorB=0688CB"></a>
-  <a href="https://github.com/reactos/reactos/blob/master/COPYING">
-    <img alt="License" src="https://img.shields.io/badge/license-GNU_GPL_2.0-0688CB.svg"></a>
+    <img alt="Licença" src="https://img.shields.io/badge/license-GNU_GPL_2.0-0688CB.svg"></a>
   <a href="https://reactos.org/donate/">
-    <img alt="Donate" src="https://img.shields.io/badge/%24-donate-E44E4A.svg"></a>
+    <img alt="Doe para o projeto principal" src="https://img.shields.io/badge/%24-donate-E44E4A.svg"></a>
 </p>
 
-## What is ReactOS?
+## O que é o ReactOS?
 
-ReactOS™ is an Open Source effort to develop a quality operating system that is compatible with applications and drivers written for the Microsoft® Windows™ NT family of operating systems (NT4, 2000, XP, 2003, Vista, 7).
+ReactOS™ é uma tentativa esforçada de desenvolver um sistema operacional de qualidade Open Source que é compatível com aplicativos e drivers escritos para a família de sistemas operacionais Microsoft® Windows™ NT (NT4, 2000, XP, 2003, Vista, 7).
 
-The ReactOS project, although currently focused on Windows Server 2003 compatibility, is always keeping an eye toward compatibility with Windows Vista and future Windows NT releases.
+O projeto ReactOS, embora atualmente focado na compatibilidade com o Windows Server 2003 (e sem x86_64), está sempre de olho na compatibilidade com o Windows Vista e futuras versões do Windows NT.
 
-The code of ReactOS is licensed under [GNU GPL 2.0](https://github.com/reactos/reactos/blob/master/COPYING).
+O código do ReactOS está licenciado sobre o tipo de licença: [GNU GPL 2.0](https://github.com/reactos/reactos/blob/master/COPYING).
 
-### Product quality warning
+### Aviso de qualidade do produto
 
-**ReactOS is currently an Alpha quality operating system.** This means that ReactOS is under heavy development and you have to be ready to encounter some problems. Different things may not work well and it can corrupt the data present on your hard disk. It is HIGHLY recommended to test ReactOS on a virtual machine or on a computer with no sensitive or critical data!
+**ReactOS é atualmente um sistema operacional de qualidade Alpha.** Isso significa que o ReactOS está em desenvolvimento pesado e você tem que estar pronto para encontrar alguns problemas. Coisas diferentes podem não funcionar bem e podem corromper os dados presentes no seu disco rígido. É altamente recomendável testar o ReactOS em uma máquina virtual ou em um computador sem dados confidenciais ou críticos!
 
-## Building/Compilar
+/*******************/
+
+## Compilar/montar
 
 **A arquitetura i386 deve ser especificada durante a configuração do CMake:**
 -DARCH=i386
@@ -87,28 +87,29 @@ See ["Building ReactOS"](https://reactos.org/wiki/Building_ReactOS) article for 
 /*******************/
 
 ## Imagem bootável
+Para construir uma imagem de CD inicializável execute **$ ninja bootcd** a partir do diretório de compilação. Isso criará uma imagem de CD com um nome de arquivo `bootcd.iso`.
 
-To build a bootable CD image run **$ ninja bootcd** from the build directory. This will create a CD image with a filename `bootcd.iso`.
+### Você sempre pode baixar novas compilações binárias de imagens inicializáveis a partir da página ["Daily builds"](https://reactos.org/getbuilds/).
 
-### You can always download fresh binary builds of bootable images from the ["Daily builds"](https://reactos.org/getbuilds/) page.
+/*******************/
 
 ## Alocação de arquivos
+Por padrão, apenas FAT16 ou FAT32.
+A Configuração do ReactOS pode formatar as partições, se necessário.
 
-By default, only FAT16 or FAT32.
-ReactOS Setup can format the partitions if needed.
+/*******************/
 
-See ["Installing ReactOS"](https://reactos.org/wiki/Installing_ReactOS) Wiki page or [INSTALL](INSTALL) for more details.
+## Contribuindo para eles [![ prwelcome.badge]](https://reactos.org/wiki/Commiting_Changes) (em inglês)
+Eles estão sempre à procura de desenvolvedores! Verifique [como contribuir](CONTRIBUTING.md) se você estiver disposto a participar.
 
-## Contributing to them  [![prwelcome.badge]](https://reactos.org/wiki/Commiting_Changes)
+## Legal note: 
+Se você tiver visto o código-fonte proprietário do Microsoft Windows (incluindo, mas não limitado ao código-fonte do Windows NT 3.5, NT 4, 2000 e ao Kernel de Pesquisa do Windows), **sua contribuição não será aceita por causa de uma potencial violação de direitos autorais**.
 
-They are always looking for developers! Check [how to contribute](CONTRIBUTING.md) if you are willing to participate.
+## Quem é responsável
+Os desenvolvedores ativos são listados como membros da [organização do GitHub](https://github.com/orgs/reactos/people).
+Veja também o arquivo [CRÉDITOS](CRÉDITOS) para outras pessoas.
 
-__Legal notice__: If you have seen proprietary Microsoft Windows source code (including but not limited to the leaked Windows NT 3.5, NT 4, 2000 source code and the Windows Research Kernel), **your contribution won't be accepted because of potential copyright violation**.
-
-## Who is responsible
-
-Active devs are listed as members of [GitHub organization](https://github.com/orgs/reactos/people).
-See also the [CREDITS](CREDITS) file for others.
+/*******************/
 
 ## Documentação mais atual minha
 https://rollingcake.mintlify.site/
