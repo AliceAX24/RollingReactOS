@@ -1,0 +1,17 @@
+; File generated automatically, do not edit!
+
+NAME mspatcha.dll
+
+EXPORTS
+ ApplyPatchToFileA@16
+ ApplyPatchToFileByHandles@16
+ ApplyPatchToFileByHandlesEx
+ ApplyPatchToFileExA
+ ApplyPatchToFileExW
+ ApplyPatchToFileW@16
+ GetFilePatchSignatureA@36
+ GetFilePatchSignatureByHandle@36
+ GetFilePatchSignatureW@36
+ TestApplyPatchToFileA@12
+ TestApplyPatchToFileByHandles@12
+ TestApplyPatchToFileW@12

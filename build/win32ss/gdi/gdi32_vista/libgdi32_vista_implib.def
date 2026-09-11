@@ -1,0 +1,7 @@
+; File generated automatically, do not edit!
+
+NAME gdi32_vista.dll
+
+EXPORTS
+ D3DKMTCreateDCFromMemory@4
+ D3DKMTDestroyDCFromMemory@4

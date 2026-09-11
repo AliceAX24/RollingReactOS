@@ -1,0 +1,16 @@
+; File generated automatically, do not edit!
+
+NAME cabinet.dll
+
+EXPORTS
+ Extract@8
+ FCICreate
+ FCIAddFile
+ FCIFlushFolder
+ FCIFlushCabinet
+ FCIDestroy
+ FDICreate
+ FDIIsCabinet
+ FDICopy
+ FDIDestroy
+ FDITruncateCabinet

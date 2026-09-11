@@ -1,0 +1,11 @@
+base/services/rpcss/CMakeFiles/rpcss.dir/rpcss.rc.res: \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/base/services/rpcss/rpcss.rc \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/reactos/version.rc \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/psdk/winver.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/psdk/specstrings.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/vcruntime/sal.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/vcruntime/ms_sal.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/vcruntime/gcc_sal.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/sdk/include/psdk/verrsrc.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/sdk/include/reactos/version.h \
+ /home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/sdk/include/reactos/buildno.h

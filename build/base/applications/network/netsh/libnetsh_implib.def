@@ -1,0 +1,31 @@
+; File generated automatically, do not edit!
+
+NAME netsh.exe
+
+EXPORTS
+ ConvertGuidToString
+ ConvertStringToGuid
+ DisplayMessageM
+ DisplayMessageToConsole
+ FreeQuotedString@4
+ FreeString@4
+ GenericMonitor
+ GetEnumString
+ GetHostMachineInfo
+ InitializeConsole
+ MakeQuotedString@4
+ MakeString
+ MatchCmdLine
+ MatchEnumTag@20
+ MatchTagsInCmdLine
+ MatchToken@8
+ NsGetFriendlyNameFromIfName@16
+ NsGetIfNameFromFriendlyName
+ PreprocessCommand@36
+ PrintError
+ PrintErrorLog
+ PrintMessage
+ PrintMessageFromModule
+ RefreshConsole
+ RegisterContext@4
+ RegisterHelper@8

@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-UCMAKE_TOOLCHAIN_FILE;-DARCH:STRING=i386;-DCMAKE_INSTALL_PREFIX=/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools;-DTOOLS_FOLDER=/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin;-DTARGET_COMPILER_ID=GNU;-DTARGET_BUILD_TYPE=Debug;-DCMAKE_BUILD_TYPE=Debug;-GNinja;-S;<SOURCE_DIR><SOURCE_SUBDIR>;-B;<BINARY_DIR>'

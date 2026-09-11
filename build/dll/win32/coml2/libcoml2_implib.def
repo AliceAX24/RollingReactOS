@@ -1,0 +1,28 @@
+; File generated automatically, do not edit!
+
+NAME coml2.dll
+
+EXPORTS
+ Coml2DllGetClassObject
+ CreateILockBytesOnHGlobal@12
+ DllGetClassObject
+ FmtIdToPropStgName@8
+ GetConvertStg@4
+ GetHGlobalFromILockBytes@8
+ PropStgNameToFmtId@8
+ ReadClassStg@8
+ ReadClassStm@8
+ StgCreateDocfile
+ StgCreateDocfileOnILockBytes
+ StgCreatePropSetStg@12
+ StgCreatePropStg
+ StgCreateStorageEx
+ StgIsStorageFile@4
+ StgIsStorageILockBytes@4
+ StgOpenPropStg
+ StgOpenStorage
+ StgOpenStorageEx
+ StgOpenStorageOnILockBytes
+ StgSetTimes
+ WriteClassStg@8
+ WriteClassStm@8

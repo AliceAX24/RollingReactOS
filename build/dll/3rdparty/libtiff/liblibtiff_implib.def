@@ -1,0 +1,21 @@
+; File generated automatically, do not edit!
+
+NAME libtiff.dll
+
+EXPORTS
+ TIFFClose
+ TIFFClientOpen
+ TIFFCurrentDirOffset
+ TIFFGetField
+ TIFFIsByteSwapped
+ TIFFNumberOfDirectories
+ TIFFReadEncodedStrip
+ TIFFReadEncodedTile
+ TIFFSetDirectory
+ TIFFSetErrorHandler
+ TIFFSetErrorHandlerExt
+ TIFFSetWarningHandler
+ TIFFSetWarningHandlerExt
+ TIFFSetField
+ TIFFWriteDirectory
+ TIFFWriteScanline

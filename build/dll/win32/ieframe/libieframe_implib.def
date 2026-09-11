@@ -1,0 +1,8 @@
+; File generated automatically, do not edit!
+
+NAME ieframe.dll
+
+EXPORTS
+ IEWinMain@8 @101 NONAME
+ IEGetWriteableHKCU@4
+ OpenURL@16

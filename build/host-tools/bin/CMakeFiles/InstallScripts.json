@@ -1,0 +1,32 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/include/host/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/dll/win32/dbghelp/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/asmpp/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/cabman/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/fatten/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/hhpcomp/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/hpp/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/isohybrid/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/kbdtool/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/log2lines/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/mkhive/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/mkisofs/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/mkshelllink/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/rsym/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/txt2nls/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/unicode/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/widl/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/wpp/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/tools/xml2sdb/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/lib/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/lib/atl/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/lib/cmlib/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/lib/inflib/cmake_install.cmake",
+		"/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/bin/sdk/lib/3rdparty/zlib/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

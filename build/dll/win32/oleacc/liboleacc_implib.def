@@ -1,0 +1,24 @@
+; File generated automatically, do not edit!
+
+NAME oleacc.dll
+
+EXPORTS
+ AccessibleChildren@20
+ AccessibleObjectFromEvent
+ AccessibleObjectFromPoint@16
+ AccessibleObjectFromWindow@16
+ CreateStdAccessibleObject@16
+ CreateStdAccessibleProxyA
+ CreateStdAccessibleProxyW
+ GetOleaccVersionInfo@8
+ GetProcessHandleFromHwnd@4
+ GetRoleTextA@12
+ GetRoleTextW@12
+ GetStateTextA@12
+ GetStateTextW@12
+ IID_IAccessible DATA
+ IID_IAccessibleHandler DATA
+ LIBID_Accessibility DATA
+ LresultFromObject@12
+ ObjectFromLresult@16
+ WindowFromAccessibleObject@8

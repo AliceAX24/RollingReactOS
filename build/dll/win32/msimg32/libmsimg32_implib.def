@@ -1,0 +1,9 @@
+; File generated automatically, do not edit!
+
+NAME msimg32.dll
+
+EXPORTS
+ vSetDdrawflag@0
+ AlphaBlend@44=gdi32.GdiAlphaBlend
+ GradientFill@24=gdi32.GdiGradientFill
+ TransparentBlt@44=gdi32.GdiTransparentBlt

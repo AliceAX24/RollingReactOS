@@ -1,0 +1,6 @@
+; File generated automatically, do not edit!
+
+NAME d3dxof.dll
+
+EXPORTS
+ DirectXFileCreate@4

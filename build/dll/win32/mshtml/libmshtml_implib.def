@@ -1,0 +1,15 @@
+; File generated automatically, do not edit!
+
+NAME mshtml.dll
+
+EXPORTS
+ CreateHTMLPropertyPage
+ DllEnumClassObjects
+ MatchExactGetIDsOfNames
+ PrintHTML@16
+ RNIGetCompatibleVersion@0
+ RunHTMLApplication@16
+ ShowHTMLDialog@20
+ ShowModalDialog
+ ShowModelessHTMLDialog
+ NP_GetEntryPoints@4

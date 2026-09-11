@@ -1,0 +1,13 @@
+; File generated automatically, do not edit!
+
+NAME msxml3.dll
+
+EXPORTS
+ MSXML3_6
+ MSXML3_7
+ MSXML3_8
+ MSXML3_9
+ MSXML3_10
+ MSXML3_11
+ MSXML3_12
+ DllGetClassObject@12

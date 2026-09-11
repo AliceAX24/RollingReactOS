@@ -1,0 +1,247 @@
+🇧🇷 Documentação: ReactOS Open RollingCake SYS Edits
+
+Visão geral do projeto:
+
+Esta modificação introduz um modo de inicialização de alto desempenho chamado "No Debug" no ReactOS 0.4.16.
+Otimizado para compilação nativa em ambientes Linux modernos (especificamente GCC 16).
+Através da implementação do parâmetro de linha de comando /NODEBUG, o sistema evita a inicialização do Kernel Debugger (KDCOM) e o registro do hardware de comunicação serial quando o modo de depuração não é necessário. Além disso, foram aplicados patches de compatibilidade para permitir a compilação bem-sucedida utilizando toolchains MinGW-w64 recentes no Arch Linux.
+
+O objetivo é obter:
+
+    Inicialização mais rápida;
+    Menor uso de recursos durante o boot;
+    Nenhuma dependência de uma porta serial para executar o sistema normalmente;
+    Um modo de inicialização apropriado para ambientes de produção;
+    Manutenção dos modos tradicionais de debug quando eles forem necessários.
+
+/*****************************/
+
+!!! Atualmente o bootloader esta em boot/freeldr e é o bootloader responsável por carregar o sistema e passar as opções de inicialização para o kernel. !!!
+
+A arquitetura padrão utilizada neste projeto é i386.
+            Em breve amd64.
+
+/*****************************/
+
+Estrutura e interação das modificações:
+
+ ----- 1. ntoskrnl/kd/kdmain.c — O cérebro
+
+                 Função
+ - Este arquivo é o principal ponto de entrada para a inicialização do Kernel Debugger. 
+ - Ele recebe e interpreta a linha de comando de boot fornecida pelo bootloader.
+
+               Modificação:
+          alice1 (10/09/2026)
+Foi adicionada lógica robusta para detectar o parâmetro:
+                /NODEBUG 
+  (dentro da função KdDebuggerInitialize0.)
+       Quando /NODEBUG é encontrado:
+
+    A variável booleana NoDebugMode é definida como TRUE.
+    A união KdpDebugMode.Value é zerada explicitamente.
+    A inicialização dos provedores de debug (Serial, Screen, File) é completamente ignorada.
+
+               Interação:
+O arquivo recebe as opções de boot através de:
+       LoaderBlock->LoadOptions
+
+Essas opções são originalmente fornecidas pelo FreeLoader.
+
+Depois disso, kdmain.c controla o estado global KdpDebugMode 
+ - utilizado posteriormente por kdserial.c para bloquear acessos ao hardware.
+
+    /*****************************/
+
+ ----- 2. ntoskrnl/kd/kdserial.c — Proteção do hardware
+
+              Interação:
+Este arquivo é responsável pela comunicação de baixo nível 
+ - com portas COM/UART utilizadas pelo sistema de debug serial.
+
+              Modificação:
+          alice1 (10/09/2026)
+Foram adicionadas verificações de segurança ("guardas") 
+ - no início das funções críticas:
+         KdbpSendCommandSerial
+         KdbpTryGetCharSerial
+
+Essas funções agora verificam imediatamente:
+if (!KdpDebugMode.Serial) return;
+
+               Objetivo:
+Quando o sistema está utilizando /NODEBUG
+ - O código não tenta acessar uma porta serial que não existe. 
+ - Isso evita que a CPU fique esperando por timeouts relacionados a portas inativas.
+ - Ou seja, boot rapido.
+
+     /*****************************/
+
+ ----- 3. hal/halx86/generic/halinit.c — Otimização de desempenho
+              
+              Função:
+Este arquivo inicializa recursos específicos de hardware da arquitetura x86 
+ - durante as primeiras etapas do boot.
+ 
+            Modificação:
+        alice1 (10/09/2026)
+A função HalInitializeProcessor foi modificada. 
+ - Verifica se /NODEBUG está presente nas opções de boot.
+     (LoaderBlock->LoadOptions)
+
+Quando /NODEBUG está ativo, o sistema não executa:
+    HalpRegisterKdSupportFunctions()
+
+             Objetivo:
+Isso evita que a HAL registre callbacks e rotinas internas 
+ - relacionadas ao Kernel Debugger quando o kernel já sabe que nenhum será usado. 
+ - Dessa maneira, não são gastos ciclos de processamento.
+
+     /*****************************/
+
+ ----- 4. sdk/lib/gcc-compat/__throw_out_of_range_fmt.cpp — Compatibilidade GCC 16
+              
+              Função:
+Este arquivo fornece implementações de compatibilidade para exceções C++ 
+                   usadas internamente pelo ReactOS.
+
+           Modificação:
+       alice1 (10/09/2026)
+    Foi adicionada a definição:
+    #define _GLIBCXX_USE_C99 1
+- no topo do arquivo, antes dos includes.
+
+            Objetivo:
+  O GCC 16 e suas bibliotecas padrão (libstdc++) 
+- tornaram-se mais rigorosas quanto ao uso de funções C99. 
+- Sem essa definição, o compilador falha ao tentar usar funções 
+- como at_quick_exit que podem não estar totalmente expostas 
+- nos headers do MinGW-w64 usados pelo ReactOS. 
+
+!!WW Esta correção permite que a compilação prossiga sem erros fatais de linkagem ou declaração. !!WW
+
+     /*****************************/
+
+ ----- 5. sdk/cmake/gcc.cmake — Configuração de Build
+              
+              Função:
+Este arquivo define as flags de compilação globais para o toolchain GCC.
+
+           Modificação:
+Foram adicionadas flags para suprimir warnings específicos
+- que se tornaram erros em versões novas do GCC:
+add_compile_options(-Wno-error=attributes -Wno-error=array-parameter)
+            
+            Objetivo:
+Bibliotecas de terceiros antigas incluídas no source do ReactOS (como FreeType) 
+- possuem estilos de código que geram warnings em compiladores modernos. 
+- Remover -Werror globalmente ou adicionar exceções específicas permite que o 
+- build complete com sucesso, tratando esses avisos como informativos e não como bloqueios.
+ -> Fluxo de funcionamento
+ O fluxo completo da modificação é:
+
+    O usuário seleciona uma entrada no freeldr.ini.
+    O FreeLoader (boot/freeldr) passa as opções selecionadas para o kernel através do LoaderBlock.
+    ntoskrnl/kd/kdmain.c analisa LoaderBlock->LoadOptions.
+    Se /NODEBUG estiver presente, KdpDebugMode é zerado e a inicialização do debugger é pulada.
+    hal/halx86/generic/halinit.c também detecta /NODEBUG e evita chamar HalpRegisterKdSupportFunctions().
+    kdserial.c possui verificações adicionais para impedir acesso ao hardware serial quando o debug serial está desativado.
+    O ReactOS continua o boot sem depender de uma porta serial e sem overhead de debug.
+
+O resultado é um caminho de inicialização mais simples e eficiente para sistemas que não precisam de debugging.
+
+A arquitetura i386 deve ser especificada durante a configuração do CMake:
+-DARCH=i386
+
+Estrutura do código-fonte para desenvolvimento
+Para testar as modificações, deve ser utilizada uma cópia do código-fonte editada.
+A estrutura recomendada é:
+
+src/
+├── boot/
+├── hal/
+├── ntoskrnl/
+├── sdk/
+├── ...
+└── build/
+
+A pasta src/build deve ficar na raiz do código-fonte editado para armazenar os artefatos de compilação.
+Compilação no Linux (Arch Linux Focus)
+O projeto pode ser compilado utilizando CMake + Ninja e o toolchain MinGW-w64.
+Dependências no Arch Linux
+No Arch Linux, os pacotes necessários podem ser instalados com:
+
+/*******************/
+
+$ sudo pacman -S --needed \
+  base-devel \
+  cmake \
+  ninja \
+  mingw-w64-gcc \
+
+/*******************/
+
+Links Simbólicos para Ferramentas
+Para garantir que o CMake encontre as ferramentas necessárias (windmc, windres, etc.), crie links simbólicos se eles não estiverem no PATH padrão:
+
+$ sudo ln -sf /usr/bin/i686-w64-mingw32-windmc /usr/local/bin/windmc
+$ sudo ln -sf /usr/bin/i686-w64-mingw32-windres /usr/local/bin/windres
+
+/*******************/
+
+Configuração do CMake
+Dentro da pasta build:
+
+$ cmake .. -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake \
+  -DARCH=i386
+
+ -- !! Compilando a ISO !! --
+Depois que o CMake terminar:
+
+$ ninja bootcd
+
+/*******************/
+
+ -- !! Testando as modificações !! --
+Depois da compilação, a ISO gerada pode ser testada em uma máquina virtual (QEMU/VirtualBox).
+Verifique as três entradas do freeldr.ini:
+
+    ReactOS_NoDebug: Deve inicializar rapidamente sem tentar acessar portas seriais.
+    ReactOS_Debug_Serial: Deve funcionar normalmente para desenvolvedores que precisam de logs via COM1.
+    ReactOS_Debug_Screen: Deve exibir logs de debug diretamente na tela VGA.
+
+/*******************/
+
+Resumo da alteração:
+
+FreeLoader
+    │
+    │ LoaderBlock->LoadOptions (/NODEBUG)
+    ▼
+kdmain.c
+    │
+    ├── Detecta /NODEBUG
+    │      │
+    │      ├── KdpDebugMode = 0
+    │      └── Pula inicialização de providers
+    │
+    ▼
+halinit.c
+    │
+    └── Não registra KDCOM/KD support functions
+    │
+    ▼
+kdserial.c
+    │
+    └── Bloqueia I/O serial se KdpDebugMode.Serial == FALSE
+    │
+    ▼
+gcc.cmake / __throw_out_of_range_fmt.cpp
+    │
+    └── Aplica patches de compatibilidade para GCC 16
+    │
+    ▼
+ReactOS Boot Completo (Fast Mode)
+
+O resultado é um caminho de boot sem debug, mais leve, sem a necessidade de uma porta serial física ou virtual para a inicialização normal, e compatível com toolchains de desenvolvimento modernas.

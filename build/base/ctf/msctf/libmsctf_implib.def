@@ -1,0 +1,40 @@
+; File generated automatically, do not edit!
+
+NAME msctf.dll
+
+EXPORTS
+ TF_GetLangIcon@12
+ TF_GetMlngHKL@16
+ TF_GetMlngIconIndex@4
+ TF_GetThreadFlags@16
+ TF_InatExtractIcon@4
+ TF_InitMlngInfo@0
+ TF_IsInMarshaling@4
+ TF_MlngInfoCount@0
+ TF_RunInputCPL@0
+ SetInputScope@8
+ SetInputScopeXML@8
+ SetInputScopes@28
+ TF_CUASAppFix@4
+ TF_CheckThreadInputIdle@8
+ TF_ClearLangBarAddIns@4
+ TF_CreateCategoryMgr@4
+ TF_CreateCicLoadMutex@4
+ TF_CreateDisplayAttributeMgr@4
+ TF_CreateInputProcessorProfiles@4
+ TF_CreateLangBarItemMgr@4
+ TF_CreateLangBarMgr@4
+ TF_CreateThreadMgr@4
+ TF_DllDetachInOther@0
+ TF_GetGlobalCompartment@4
+ TF_GetInputScope@8
+ TF_GetThreadMgr@4
+ TF_InitSystem@0
+ TF_InvalidAssemblyListCache@0
+ TF_InvalidAssemblyListCacheIfExist@0
+ TF_IsCtfmonRunning@0
+ TF_IsFullScreenWindowAcitvated@0
+ TF_PostAllThreadMsg@8
+ TF_RegisterLangBarAddIn@12
+ TF_UninitSystem@0
+ TF_UnregisterLangBarAddIn@8

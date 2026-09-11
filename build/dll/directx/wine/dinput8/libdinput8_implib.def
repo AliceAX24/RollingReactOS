@@ -1,0 +1,6 @@
+; File generated automatically, do not edit!
+
+NAME dinput8.dll
+
+EXPORTS
+ DirectInput8Create@20

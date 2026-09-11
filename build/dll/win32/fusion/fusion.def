@@ -1,0 +1,22 @@
+; File generated automatically, do not edit!
+
+NAME fusion.dll
+
+EXPORTS
+ CopyPDBs=CopyPDBs@4 @1
+ ClearDownloadCache=ClearDownloadCache@0 @2
+ CreateApplicationContext=CreateApplicationContext@8 @3
+ CreateAssemblyCache=CreateAssemblyCache@8 @4
+ CreateAssemblyEnum=CreateAssemblyEnum@20 @5
+ CreateAssemblyNameObject=CreateAssemblyNameObject@16 @6
+ CreateHistoryReader @7
+ CreateInstallReferenceEnum=CreateInstallReferenceEnum@16 @8
+ GetCachePath=GetCachePath@12 @9
+ GetHistoryFileDirectory @10
+ InitializeFusion=InitializeFusion@0 @11
+ InstallCustomAssembly @12
+ InstallCustomModule @13
+ LookupHistoryAssembly @14
+ NukeDownloadedCache @15
+ PreBindAssembly @16
+ PreBindAssemblyEx @17

@@ -1,0 +1,13 @@
+# Target labels
+ host-tools
+# Source files and their labels
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/CMakeFiles/host-tools
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/CMakeFiles/host-tools.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/CMakeFiles/host-tools-complete.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-build.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-configure.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-download.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-install.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-mkdir.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-patch.rule
+/home/alice/Estudos/ReactOS/ReactOSRCCompile1/build/host-tools/src/host-tools-stamp/host-tools-update.rule

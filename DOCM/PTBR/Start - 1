@@ -1,0 +1,432 @@
+/*******************/
+
+🇧🇷 Documentação: ReactOS Open RollingCake SYS Edits
+
+Visão geral do projeto:
+
+Esta modificação introduz um modo de inicialização de alto desempenho chamado "No Debug" no ReactOS 0.4.16.
+Otimizado para compilação nativa em ambientes Linux modernos (especificamente GCC 16).
+Através da implementação do parâmetro de linha de comando /NODEBUG, o sistema evita a inicialização do Kernel Debugger (KDCOM) e o registro do hardware de comunicação serial quando o modo de depuração não é necessário.
+
+O objetivo é obter:
+
+    Inicialização mais rápida;
+    Menor uso de recursos durante o boot;
+    Nenhuma dependência de uma porta serial para executar o sistema normalmente;
+    Um modo de inicialização apropriado para ambientes de produção;
+    Manutenção dos modos tradicionais de debug quando eles forem necessários.
+
+/*******************/
+
+O boot/freeldr é o bootloader responsável por carregar o sistema e passar as opções de inicialização para o kernel.
+
+A arquitetura padrão utilizada neste projeto é i386.
+Estrutura e interação das modificações:
+
+1. ntoskrnl/kd/kdmain.c — O cérebro --
+Função
+
+Este arquivo é o principal ponto de entrada para a inicialização do Kernel Debugger.
+
+Ele recebe e interpreta a linha de comando de boot fornecida pelo bootloader.
+Modificação
+
+Foi adicionada lógica para detectar o parâmetro:
+
+/NODEBUG
+
+dentro de KdDebuggerInitialize0.
+
+Quando /NODEBUG é encontrado, a união KdpDebugMode é zerada.
+
+Isso impede que os provedores de debug sejam inicializados, incluindo:
+
+    Serial;
+    Screen;
+    File.
+
+Interação
+
+O arquivo recebe as opções de boot através de:
+
+LoaderBlock->LoadOptions
+
+Essas opções são originalmente fornecidas pelo FreeLoader (boot/freeldr).
+
+Depois disso, kdmain.c controla o estado global KdpDebugMode, utilizado posteriormente por kdserial.c.
+
+2. ntoskrnl/kd/kdserial.c — Proteção do hardware --
+Função
+
+Este arquivo é responsável pela comunicação de baixo nível com portas COM/UART utilizadas pelo sistema de debug serial.
+Modificação
+
+Foram adicionadas verificações de segurança no início das funções:
+
+KdbpSendCommandSerial
+KdbpTryGetCharSerial
+
+Essas funções agora verificam:
+
+KdpDebugMode.Serial
+
+antes de tentar realizar qualquer operação de I/O no hardware serial.
+Objetivo
+
+Quando o sistema está utilizando /NODEBUG, o código não tenta acessar uma porta serial que não existe ou que não está sendo utilizada.
+
+Isso evita que a CPU fique esperando por timeouts relacionados a portas COM inexistentes ou inativas.
+
+Em outras palavras, o programa foi modificado para não precisar de uma porta serial para inicializar e executar normalmente.
+
+A porta serial continua disponível para os modos de debug que realmente precisam dela.
+3. hal/halx86/generic/halinit.c — Otimização de desempenho
+Função
+
+Este arquivo inicializa recursos específicos de hardware da arquitetura x86 durante as primeiras etapas do boot.
+Modificação
+
+HalInitializeProcessor foi modificado para verificar se /NODEBUG está presente nas opções de boot.
+
+Quando /NODEBUG está ativo, o sistema não executa:
+
+HalpRegisterKdSupportFunctions()
+
+Objetivo
+
+Isso evita que a HAL registre callbacks relacionados ao Kernel Debugger quando o kernel já sabe que nenhum debug será utilizado.
+
+Dessa maneira, não são gastos ciclos de processamento registrando funções que não serão chamadas.
+4. boot/freeldr/freeldr.ini — Interface de boot
+Função
+
+O FreeLoader, localizado em boot/freeldr, é o bootloader do ReactOS.
+
+O arquivo freeldr.ini define as entradas do menu de inicialização e os parâmetros que serão passados ao kernel.
+Modificação
+
+Foram adicionadas três opções distintas de inicialização:
+ReactOS_NoDebug
+
+Utiliza:
+
+/NODEBUG /FASTDETECT
+
+Essa é a opção destinada ao boot mais rápido, sem inicialização do Kernel Debugger.
+ReactOS_Debug_Serial
+
+Utiliza:
+
+/DEBUGPORT=COM1
+
+Essa opção mantém o debug através da porta serial COM1.
+ReactOS_Debug_Screen
+
+Utiliza:
+
+/DEBUGPORT=SCREEN
+
+Essa opção utiliza a tela como saída de debug.
+Fluxo de funcionamento
+
+O fluxo completo da modificação é:
+
+    O usuário seleciona uma entrada no freeldr.ini.
+    O FreeLoader (boot/freeldr) passa as opções selecionadas para o kernel através do LoaderBlock.
+    ntoskrnl/kd/kdmain.c analisa LoaderBlock->LoadOptions.
+    Se /NODEBUG estiver presente, KdpDebugMode é zerado.
+    hal/halx86/generic/halinit.c também detecta /NODEBUG.
+    A HAL evita chamar HalpRegisterKdSupportFunctions().
+    kdserial.c possui verificações adicionais para impedir acesso ao hardware serial quando o debug serial está desativado.
+    O ReactOS continua o boot sem depender de uma porta serial.
+
+O resultado é um caminho de inicialização mais simples e eficiente para sistemas que não precisam de debugging.
+Arquitetura
+
+O projeto utiliza: i386 por padrão.
+
+como arquitetura padrão.
+
+A arquitetura i386 deve ser especificada durante a configuração do CMake:
+
+-DARCH=i386
+
+Estrutura do código-fonte para desenvolvimento
+Para testar as modificações, deve ser utilizada uma cópia do código-fonte editada, e não o código-fonte original sem modificações.
+
+A estrutura recomendada é:
+
+src/
+├── boot/
+├── hal/
+├── ntoskrnl/
+├── sdk/
+├── ...
+└── build/
+
+A pasta:
+$ src/build
+
+deve ficar na raiz do código-fonte editado.
+O build será utilizado para armazenar os arquivos gerados pelo CMake, Ninja e o restante dos artefatos da compilação.
+Isso mantém os arquivos gerados separados do código-fonte modificado.
+
+Exemplo:
+
+cd src
+mkdir build
+cd build
+
+A partir daqui, os comandos de configuração e compilação devem ser executados dentro de src/build.
+Compilação no Linux
+
+O projeto pode ser compilado utilizando CMake + Ninja e o toolchain MinGW-w64.
+
+O ReactOS utiliza CMake para gerar os arquivos do sistema de build e Ninja para executar a compilação. O projeto oficialmente utiliza CMake e Ninja em seu ambiente de desenvolvimento.
+Removendo -Werror
+
+Para esta versão modificada do projeto, é necessário remover -Werror do arquivo:
+
+sdk/cmake/gcc.cmake
+
+Execute:
+
+sed -i 's/-Werror//' sdk/cmake/gcc.cmake
+
+Isso evita que determinados warnings sejam tratados como erros durante a compilação.
+
+    Observação: o comando acima remove -Werror; ele não "deixa -Werror". Ou seja, ele desativa o tratamento de warnings como erros.
+
+Configuração do CMake
+
+Dentro da pasta build:
+
+cmake .. -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake \
+  -DARCH=i386
+
+A opção:
+
+-DARCH=i386
+
+define a arquitetura padrão do build.
+
+A opção:
+
+-DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake
+
+informa ao CMake para utilizar o toolchain GCC/MinGW do ReactOS.
+Compilando a ISO
+
+Depois que o CMake terminar:
+
+ninja bootcd
+
+O target bootcd gera a imagem de instalação/boot do ReactOS.
+
+Portanto, o fluxo básico é:
+
+cd src
+mkdir -p build
+cd build
+
+cmake .. -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake \
+  -DARCH=i386
+
+ninja bootcd
+
+O ReactOS também documenta ninja bootcd como um dos targets utilizados para gerar uma imagem bootável.
+Dependências no Arch Linux
+
+No Arch Linux, os pacotes necessários podem ser instalados com:
+
+sudo pacman -S --needed \
+  base-devel \
+  cmake \
+  ninja \
+  mingw-w64-gcc \
+  mingw-w64-binutils \
+  mingw-w64-crt \
+  mingw-w64-headers \
+  mingw-w64-winpthreads \
+  flex \
+  bison \
+  texinfo \
+  zip \
+  p7zip \
+  python
+
+O Arch atualmente disponibiliza os componentes mingw-w64-gcc, mingw-w64-binutils, mingw-w64-crt, mingw-w64-headers e mingw-w64-winpthreads nos repositórios oficiais/grupos MinGW-w64.
+Dependências no Debian/Ubuntu e derivados
+
+No Debian/Ubuntu, os nomes dos pacotes não são exatamente iguais aos do Arch.
+
+Uma instalação inicial pode ser feita com:
+
+sudo apt update
+
+sudo apt install \
+  build-essential \
+  cmake \
+  ninja-build \
+  mingw-w64 \
+  binutils-mingw-w64 \
+  gcc-mingw-w64-i686 \
+  flex \
+  bison \
+  texinfo \
+  zip \
+  p7zip-full \
+  python3
+
+Para este projeto, é importante que o compilador cruzado i686 MinGW-w64 esteja disponível, pois a compilação utiliza a arquitetura i386.
+
+Verifique:
+
+i686-w64-mingw32-gcc --version
+
+Se o comando responder com a versão do GCC, o compilador cruzado está disponível no PATH.
+Comandos ln para os binários do MinGW
+
+Em algumas instalações Linux, determinados nomes de executáveis podem não estar disponíveis exatamente como o toolchain espera.
+
+Primeiro, verifique quais binários existem:
+
+which i686-w64-mingw32-gcc
+which i686-w64-mingw32-g++
+which i686-w64-mingw32-ar
+which i686-w64-mingw32-ld
+
+Caso seja necessário criar aliases através de links simbólicos, é melhor utilizar uma pasta própria do usuário em vez de alterar diretamente /usr/bin:
+
+mkdir -p ~/.local/bin
+
+Por exemplo:
+
+ln -sf "$(command -v i686-w64-mingw32-gcc)" ~/.local/bin/i686-w64-mingw32-gcc
+ln -sf "$(command -v i686-w64-mingw32-g++)" ~/.local/bin/i686-w64-mingw32-g++
+ln -sf "$(command -v i686-w64-mingw32-ar)" ~/.local/bin/i686-w64-mingw32-ar
+ln -sf "$(command -v i686-w64-mingw32-ld)" ~/.local/bin/i686-w64-mingw32-ld
+
+E garanta que ~/.local/bin esteja no PATH:
+
+export PATH="$HOME/.local/bin:$PATH"
+
+Se necessário, essa linha pode ser adicionada ao ~/.bashrc ou ao arquivo correspondente ao shell utilizado.
+
+Não é necessário criar esses links se os executáveis i686-w64-mingw32-* já estiverem corretamente instalados e disponíveis no PATH.
+Fluxo completo de preparação
+
+Em uma máquina Arch Linux, por exemplo:
+
+sudo pacman -S --needed \
+  base-devel \
+  cmake \
+  ninja \
+  mingw-w64-gcc \
+  mingw-w64-binutils \
+  mingw-w64-crt \
+  mingw-w64-headers \
+  mingw-w64-winpthreads \
+  flex \
+  bison \
+  texinfo \
+  zip \
+  p7zip \
+  python
+
+Depois, dentro do código-fonte editado:
+
+cd src
+
+Remova -Werror:
+
+sed -i 's/-Werror//' sdk/cmake/gcc.cmake
+
+Crie o diretório de build:
+
+mkdir -p build
+cd build
+
+Configure:
+
+cmake .. -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc.cmake \
+  -DARCH=i386
+
+Compile:
+
+ninja bootcd
+
+Testando as modificações
+
+Depois da compilação, a ISO gerada pelo target bootcd pode ser utilizada para testar o ReactOS modificado em uma máquina virtual ou hardware de teste.
+
+O ponto principal para testar esta modificação é verificar as três entradas do freeldr.ini:
+
+ReactOS_NoDebug
+ReactOS_Debug_Serial
+ReactOS_Debug_Screen
+
+Teste ReactOS_NoDebug
+
+Deve inicializar utilizando:
+
+/NODEBUG /FASTDETECT
+
+Nesse modo:
+
+    O Kernel Debugger não deve ser inicializado;
+    O registro de suporte do debugger pela HAL deve ser ignorado;
+    O código serial não deve realizar I/O de debug;
+    O sistema não deve depender de uma porta serial;
+    O boot deve evitar os delays associados ao acesso a portas COM inexistentes.
+
+Teste ReactOS_Debug_Serial
+
+Deve utilizar:
+
+/DEBUGPORT=COM1
+
+Esse modo mantém o caminho de debug serial para desenvolvimento e diagnóstico.
+Teste ReactOS_Debug_Screen
+
+Deve utilizar:
+
+/DEBUGPORT=SCREEN
+
+Esse modo permite utilizar a saída de debug pela tela.
+Resumo da alteração
+
+A alteração pode ser resumida da seguinte forma:
+
+FreeLoader
+    │
+    │ LoaderBlock->LoadOptions
+    ▼
+kdmain.c
+    │
+    ├── /NODEBUG
+    │      │
+    │      ├── KdpDebugMode = 0
+    │      └── Debugger desativado
+    │
+    ▼
+halinit.c
+    │
+    └── Não registra KDCOM/KD support functions
+    │
+    ▼
+kdserial.c
+    │
+    └── Não acessa COM/UART quando Serial = 0
+    │
+    ▼
+ReactOS
+    │
+    └── Boot sem depender de porta serial
+
+O resultado é um caminho de boot sem debug, mais leve e sem a necessidade de uma porta serial física ou virtual para a inicialização normal do sistema.
+
+Observação importante: ajustei a parte do sed para refletir exatamente o que o comando faz: sed -i 's/-Werror//' remove -Werror, em vez de "deixá-lo". Também deixei os ln -s como uma etapa opcional, porque eles só são necessários quando os executáveis do MinGW não estão sendo encontrados pelos nomes esperados.

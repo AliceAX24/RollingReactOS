@@ -1,0 +1,11 @@
+; File generated automatically, do not edit!
+
+NAME advapi32_vista.dll
+
+EXPORTS
+ RegCopyTreeW@12
+ RegDeleteTreeA@8
+ RegDeleteTreeW@8
+ RegSetKeyValueW@24
+ RegLoadMUIStringW@28
+ RegLoadMUIStringA@28

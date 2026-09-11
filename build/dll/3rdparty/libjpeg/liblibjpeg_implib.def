@@ -1,0 +1,29 @@
+; File generated automatically, do not edit!
+
+NAME libjpeg.dll
+
+EXPORTS
+ jpeg_std_error
+ jpeg_CreateCompress
+ jpeg_CreateDecompress
+ jpeg_destroy_compress
+ jpeg_destroy_decompress
+ jpeg_set_defaults
+ jpeg_start_compress
+ jpeg_write_scanlines
+ jpeg_finish_compress
+ jpeg_read_header
+ jpeg_start_decompress
+ jpeg_read_scanlines
+ jpeg_finish_decompress
+ jpeg_resync_to_restart
+ jpeg_set_colorspace
+ jpeg_set_quality
+ jpeg_suppress_tables
+ jpeg_std_huff_table
+ jpeg_write_raw_data
+ jpeg_write_tables
+ jpeg_read_raw_data
+ jpeg_has_multiple_scans
+ jpeg_abort
+ jpeg_destroy

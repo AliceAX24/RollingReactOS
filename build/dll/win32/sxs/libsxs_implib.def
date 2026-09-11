@@ -1,0 +1,8 @@
+; File generated automatically, do not edit!
+
+NAME sxs.dll
+
+EXPORTS
+ CreateAssemblyCache@8
+ CreateAssemblyNameObject@16
+ SxsLookupClrGuid@24

@@ -1,0 +1,8 @@
+; File generated automatically, do not edit!
+
+NAME w32time.dll
+
+EXPORTS
+ SvchostEntry_W32Time@8=W32TmServiceMain@8
+ W32TimeSyncNow@12
+ W32TmServiceMain@8

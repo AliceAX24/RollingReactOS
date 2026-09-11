@@ -1,0 +1,9 @@
+; File generated automatically, do not edit!
+
+NAME msutb.dll
+
+EXPORTS
+ ClosePopupTipbar@0
+ GetLibTls@0
+ GetPopupTipbar@8
+ SetRegisterLangBand@4
